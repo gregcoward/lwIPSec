@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 var hostname = 'localhost';
 var port = '8443';
 var myArgs = process.argv.slice(2);
@@ -25,6 +26,7 @@ var schema = {
         "destinationSubnet"
     ]
 };
+const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 //Expect (hostname and/or port) - defaults to 127.0.0.1 8443 
 if (myArgs.length == 0) {
@@ -35,8 +37,6 @@ if (myArgs.length == 0) {
     hostname = myArgs[0];
     port = myArgs[1];
 };
-
-const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 const server = http.createServer((req, res) => {
     
@@ -91,14 +91,14 @@ const server = http.createServer((req, res) => {
                     
                     // Output ipsec status to console
                     sleep(5000).then(() => {
-                        // This will execute 10 seconds from now
+                        // This will execute 5 seconds from now
                         exec("ipsec status", function(err, stdout, stderr) {
                             let ts = Date.now();
                             let date_ob = new Date(ts);
                             let date = date_ob.getDate();
                             let month = date_ob.getMonth() + 1;
                             let year = date_ob.getFullYear();
-                            console.log('Entry Date - Timestamp: ' + month + "/" + date + "/" + year + ' - ' + ts);
+                            console.log('Configuration Update Date - Timestamp: ' + month + "/" + date + "/" + year + ' - ' + ts + '\n');
                             console.log(stdout);
                         });
                     });
