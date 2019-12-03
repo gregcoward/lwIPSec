@@ -1,6 +1,6 @@
 const http = require('http');
 var hostname = 'localhost';
-const port = 8443;
+var port = '8443';
 var myArgs = process.argv.slice(2);
 var fs = require("fs");
 var exec = require('child_process').exec;
@@ -26,11 +26,14 @@ var schema = {
     ]
 };
 
-//Expect a single parameter (hostname) - defaults to 127.0.0.1 
+//Expect (hostname and/or port) - defaults to 127.0.0.1 8443 
 if (myArgs.length == 0) {
     hostname = '127.0.0.1';
-} else {
+} else if (myArgs.length == 1) {
     hostname = myArgs[0];
+} else { 
+    hostname = myArgs[0];
+    port = myArgs[1];
 };
 
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
